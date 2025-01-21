@@ -1,2 +1,2 @@
-import '../css/style.css'
-import './slider.ts'
+import '../css/style.css';
+import './slider.ts';

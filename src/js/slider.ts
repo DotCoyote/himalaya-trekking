@@ -1,14 +1,13 @@
 import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
-// @ts-ignore
+// @ts-expect-error Swiper has no types
 import 'swiper/css';
-// @ts-ignore
+// @ts-expect-error Swiper has no types
 import 'swiper/css/navigation';
-// @ts-ignore
+// @ts-expect-error Swiper has no types
 import 'swiper/css/pagination';
 
 new Swiper('.swiper', {
-
   modules: [Navigation, Pagination],
   loop: true,
   pagination: {
