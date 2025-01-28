@@ -53,3 +53,13 @@ p + * {
   height: 100%;
   object-fit: cover;
 }
+.swiper-button-next,
+.swiper-button-prev {
+  @apply !text-white;
+}
+.swiper-pagination-bullet {
+  @apply !border-white;
+}
+.swiper-pagination-bullet-active {
+  @apply !bg-white;
+}
