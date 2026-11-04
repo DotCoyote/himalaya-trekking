@@ -1,2 +1,4 @@
-user-agent: *
-Allow: *
+User-agent: *
+Allow: /
+
+Sitemap: https://himalaya-experience.com/sitemap.xml
