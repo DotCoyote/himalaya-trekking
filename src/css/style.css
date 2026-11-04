@@ -4,80 +4,111 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mukta 800 cut down to the glyphs of "नमस्ते" (~6 kB instead of ~100 kB).
+   Regenerate with pyftsubset (fonttools) if the Devanagari text changes:
+   pyftsubset node_modules/@fontsource/mukta/files/mukta-devanagari-800-normal.woff2 --text="नमस्ते" --layout-features='*' --flavor=woff2 --output-file=src/fonts/mukta-800-namaste.woff2 */
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../fonts/mukta-800-namaste.woff2') format('woff2');
+  unicode-range: U+0924, U+0928, U+092E, U+0938, U+0947, U+094D;
+}
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  @apply bg-slate font-sans text-glacier;
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  @apply text-grass underline decoration-1 underline-offset-4 hover:text-grass-light;
 }
 
-h1 {
-  font-size: 2rem;
-  font-weight: 600;
-
-  + * {
-    margin-top: 2rem;
-  }
+:focus-visible {
+  @apply outline outline-2 outline-offset-4 outline-grass;
 }
 
 h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
+  @apply font-semibold leading-tight;
+  font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.25rem);
+}
 
-  + * {
-    margin-top: 1rem;
+/* Hero */
+.hero {
+  @apply relative flex min-h-[100svh] items-end overflow-hidden;
+}
+.hero > img {
+  @apply absolute inset-0 h-full w-full object-cover;
+  object-position: 50% 30%;
+}
+.hero::after {
+  content: '';
+  @apply absolute inset-0;
+  background: linear-gradient(to top, theme('colors.slate.DEFAULT') 0%, rgb(29 39 46 / 0.75) 30%, rgb(29 39 46 / 0) 65%);
+}
+.hero__text {
+  @apply relative z-10;
+}
+
+/* Devanagari needs extra line height for the vowel marks above and below the headline stroke */
+.namaste {
+  @apply font-extrabold;
+  font-size: clamp(6rem, 1rem + 22vw, 15rem);
+  line-height: 1.15;
+  margin-left: -0.04em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .namaste {
+    animation: rise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero__intro {
+    animation: rise 0.8s 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
   }
 }
 
-/*Typography*/
-p + * {
-  margin-top: 1.5rem;
+/* Highest point of each trek, scaled to 6,000 m */
+.altitude-bar {
+  @apply block h-1 bg-slate-line;
+}
+.altitude-bar::before {
+  content: '';
+  @apply block h-full bg-grass;
+  width: calc(var(--altitude) / 6000 * 100%);
 }
 
-/* Slider */
-.swiper-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Photo strip */
+.photos {
+  @apply flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4;
+  scrollbar-color: theme('colors.slate.line') transparent;
+  /* Start the strip on the content column (max-w-6xl + px-5/md:px-12), let it bleed to the right edge */
+  --gutter: max(1.25rem, calc((100% - 72rem) / 2 + 1.25rem));
+  padding-inline: var(--gutter);
+  scroll-padding-inline: var(--gutter);
 }
-.swiper-button-next,
-.swiper-button-prev {
-  @apply !text-white;
+@media (min-width: 768px) {
+  .photos {
+    --gutter: max(3rem, calc((100% - 72rem) / 2 + 3rem));
+  }
 }
-.swiper-pagination-bullet {
-  @apply !border-white;
-}
-.swiper-pagination-bullet-active {
-  @apply !bg-white;
+.photos > li {
+  @apply shrink-0 snap-start;
+  width: min(80vw, 34rem);
 }
