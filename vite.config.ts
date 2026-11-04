@@ -36,6 +36,9 @@ function getHtmlEntryFiles(srcDir: string) {
 }
 
 export default defineConfig({
+  // Vite defaults to IPv6 [::1] on macOS; Firefox resolves localhost to 127.0.0.1
+  server: { host: '127.0.0.1' },
+  preview: { host: '127.0.0.1' },
   build: {
     rollupOptions: {
       input: getHtmlEntryFiles('./'),
